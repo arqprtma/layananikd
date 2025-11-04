@@ -2,6 +2,8 @@
 
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react"; 
+import user from "../assets/user.png";
 
 const DATA = {
   meta: {
@@ -72,17 +74,34 @@ function Sidebar() {
   );
 }
 
-function Header({ updated }) {
+function Header({ updated, onToggleSidebar }) {
   return (
-    <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 px-4 md:px-6 py-4 border-b border-slate-100 bg-white">
-      <div>
-        <div className="text-sm text-slate-500">Dashboard Pemantauan Layanan IKD</div>
-        <div className="text-xs text-slate-400">Data cut-off: {updated}</div>
+    <header className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-white">
+      <div className="flex items-center gap-3">
+        {/* 🍔 Burger menu hanya muncul di HP */}
+        <button
+          onClick={onToggleSidebar}
+          className="md:hidden text-slate-600 text-2xl focus:outline-none"
+        >
+          ☰
+        </button>
+        <div>
+          <div className="text-sm text-slate-500">
+            Dashboard Pemantauan Layanan IKD
+          </div>
+          <div className="text-xs text-slate-400">Data cut-off: {updated}</div>
+        </div>
       </div>
 
-      <div className="flex items-center gap-3 justify-end">
-        <div className="text-slate-500 text-sm sm:block">Admin Dukcapil</div>
-        <div className="w-9 h-9 rounded-full bg-slate-200" />
+      <div className="flex items-center gap-4">
+        <div className="text-slate-500 text-sm hidden md:block">
+          Admin Dukcapil
+        </div>
+       <img
+          src={user}
+          alt="User avatar"
+          className="w-9 h-9 rounded-full object-cover border border-slate-200"
+        />
       </div>
     </header>
   );
@@ -222,20 +241,90 @@ function WilayahTable({ wilayah }) {
   );
 }
 
+function MobileSidebar({ open, onClose }) {
+  return (
+    <>
+      {/* Background overlay */}
+      <div
+        onClick={onClose}
+        className={`fixed inset-0 bg-black/30 transition-opacity duration-300 ${
+          open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+      ></div>
+
+      {/* Sidebar content */}
+      <aside
+        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg transform transition-transform duration-300 z-50 ${
+          open ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <div className="p-6 border-b">
+          <div className="flex items-center gap-2">
+            <div className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold">
+              IKD
+            </div>
+            <div>
+              <div className="text-sm font-semibold">Sistem IKD</div>
+              <div className="text-xs text-slate-400">Dinas Dukcapil DKI</div>
+            </div>
+          </div>
+        </div>
+
+        <nav className="flex flex-col gap-2 p-4">
+          <button
+            className="text-left flex items-center gap-3 py-2 px-3 rounded-lg bg-slate-50 font-medium"
+            onClick={onClose}
+          >
+            🏠 Dashboard
+          </button>
+          <button
+            onClick={() => {
+              localStorage.removeItem("isAuthenticated");
+              window.location.href = "/login";
+            }}
+            className="text-left flex items-center gap-3 py-2 px-3 rounded-lg bg-red-500 text-white font-medium"
+          >
+            🚪 Logout
+          </button>
+        </nav>
+      </aside>
+    </>
+  );
+}
+
+
 /* --- main app --- */
 export default function App() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const sorted = [...DATA.wilayah].sort((a, b) => b.persen - a.persen);
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col md:flex-row">
+    <div className="min-h-screen bg-slate-50 text-slate-800 flex relative">
+      {/* Desktop sidebar */}
       <Sidebar />
+
+      {/* Mobile sidebar */}
+      <MobileSidebar
+        open={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+      />
+
       <div className="flex-1 flex flex-col">
-        <Header updated={DATA.meta.updated} />
-        <main className="p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* left/main content */}
-          <section className="lg:col-span-8 space-y-6">
+        <Header
+          updated={DATA.meta.updated}
+          onToggleSidebar={() => setSidebarOpen(true)}
+        />
+
+        <main className="p-6 grid grid-cols-12 gap-6">
+          {/* Konten utama */}
+          <section className="col-span-12 md:col-span-8 space-y-6">
             <div>
-              <h2 className="text-xl sm:text-2xl font-bold mb-4">Progress Aktivasi IKD per Wilayah</h2>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-2xl font-bold">
+                  Progress Aktivasi IKD per Wilayah
+                </h2>
+              </div>
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {sorted.slice(0, 6).map((w) => (
                   <RegionCard key={w.id} item={w} />
@@ -249,8 +338,8 @@ export default function App() {
             </div>
           </section>
 
-          {/* right sidebar */}
-          <aside className="lg:col-span-4 space-y-6">
+          {/* Sidebar kanan */}
+          <aside className="col-span-12 md:col-span-4 space-y-6">
             <StatsPanel meta={DATA.meta} />
             <ActivityChart wilayah={sorted} />
           </aside>
