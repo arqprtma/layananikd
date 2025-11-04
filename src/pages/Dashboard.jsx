@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -75,7 +77,6 @@ const DATA = {
 /* --- small helpers --- */
 const statusFromPercent = (p, target = 30) => {
   if (p >= target) return { label: "Melebihi target", color: "green" };
-  if (p >= target - 2) return { label: "Mendekati target", color: "yellow" };
   return { label: "Belum sesuai target", color: "red" };
 };
 
@@ -197,19 +198,40 @@ function StatsPanel({ meta }) {
 }
 
 function ActivityChart({ wilayah }) {
-  // Simple SVG bar chart of persen per wilayah
-  const max = Math.max(...wilayah.map((w) => w.persen), 30);
+  // Ambil nilai maksimum persen dari data
+  const max = Math.max(...wilayah.map((w) => w.persen));
+
   return (
     <div className="bg-white rounded-2xl p-4 shadow-sm">
       <div className="text-sm font-semibold mb-3">Capaian per Wilayah (%)</div>
-      <div className="flex items-end gap-3 h-40">
-        {wilayah.map((w) => (
-          <div key={w.id} className="flex-1 flex flex-col items-center">
-            <div style={{ height: `${(w.persen / max) * 100}%` }} className={`w-full rounded-t-md ${w.persen >= DATA.meta.target ? "bg-green-400" : "bg-blue-300"}`}></div>
-            <div className="text-xs text-center mt-2">{w.nama.split(" ")[1] ?? w.nama.split(" ")[0]}</div>
-            <div className="text-xs text-slate-500 mt-1">{w.persen}%</div>
-          </div>
-        ))}
+      <div className="flex items-end justify-between gap-3 h-52 px-2">
+        {wilayah.map((w) => {
+          const height = (w.persen / max) * 100; // hitung proporsi
+
+          return (
+            <div
+              key={w.id}
+              className="flex-1 flex flex-col items-center justify-end"
+            >
+              {/* 🟩 batang grafik */}
+              <div
+                className={`w-7 rounded-t-md transition-all duration-500 ${
+                  w.persen >= 30 ? "bg-green-400" : "bg-red-400"
+                }`}
+                style={{
+                  height: `${height}px`,
+                  minHeight: "5px", // kecil saja biar tetap kelihatan
+                }}
+              ></div>
+
+              {/* label bawah */}
+              <div className="text-xs text-center mt-2 font-medium">
+                {w.nama.split(" ")[1] ?? w.nama.split(" ")[0]}
+              </div>
+              <div className="text-[11px] text-slate-500">{w.persen}%</div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
@@ -278,7 +300,7 @@ export default function App() {
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                {sorted.slice(0, 4).map((w) => <RegionCard key={w.id} item={w} />)}
+                {sorted.slice(0, 6).map((w) => <RegionCard key={w.id} item={w} />)}
               </div>
             </div>
 
