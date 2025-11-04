@@ -157,7 +157,7 @@ function ActivityChart({ wilayah }) {
                   w.persen >= 30 ? "bg-green-400" : "bg-red-400"
                 }`}
                 style={{
-                  height: `${height}%`,
+                  height: `${height}px`,
                   minHeight: "8px",
                 }}
               ></div>
@@ -253,14 +253,6 @@ export default function App() {
           <aside className="lg:col-span-4 space-y-6">
             <StatsPanel meta={DATA.meta} />
             <ActivityChart wilayah={sorted} />
-            <div className="bg-white rounded-2xl p-4 shadow-sm">
-              <div className="text-sm font-semibold mb-2">Aksi Cepat</div>
-              <div className="flex flex-col gap-2">
-                <button className="w-full py-2 rounded-lg bg-blue-600 text-white">Export Laporan (Excel)</button>
-                <button className="w-full py-2 rounded-lg border border-slate-200 text-slate-700">Download PDF</button>
-                <button className="w-full py-2 rounded-lg bg-slate-100 text-slate-700">Kirim Notifikasi ke Wilayah</button>
-              </div>
-            </div>
           </aside>
         </main>
       </div>
