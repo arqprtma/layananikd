@@ -242,6 +242,12 @@ function WilayahTable({ wilayah }) {
 }
 
 function MobileSidebar({ open, onClose }) {
+    const navigate = useNavigate();
+
+   const handleLogout = () => {
+    localStorage.removeItem("isAuthenticated");
+    navigate("/login");
+  };
   return (
     <>
       {/* Background overlay */}
@@ -277,15 +283,12 @@ function MobileSidebar({ open, onClose }) {
           >
             🏠 Dashboard
           </button>
-          <button
-            onClick={() => {
-              localStorage.removeItem("isAuthenticated");
-              window.location.href = "/login";
-            }}
-            className="text-left flex items-center gap-3 py-2 px-3 rounded-lg bg-red-500 text-white font-medium"
-          >
-            🚪 Logout
-          </button>
+           <button
+          onClick={handleLogout}
+          className="w-full bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+        >
+          Logout
+        </button>
         </nav>
       </aside>
     </>
