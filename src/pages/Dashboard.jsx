@@ -81,7 +81,7 @@ function Header({ updated }) {
       </div>
 
       <div className="flex items-center gap-3 justify-end">
-        <div className="text-slate-500 text-sm hidden sm:block">Admin Dukcapil</div>
+        <div className="text-slate-500 text-sm sm:block">Admin Dukcapil</div>
         <div className="w-9 h-9 rounded-full bg-slate-200" />
       </div>
     </header>
