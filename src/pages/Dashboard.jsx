@@ -15,13 +15,13 @@ import { useNavigate } from "react-router-dom";
 
 /* --- sample data (from your text) --- */
 const DATA = {
-  meta: {
-    total_wajib_ktp: 8079119,
-    total_aktivasi: 2177081,
-    rata_rata: 26.95,
-    target: 30,
-    updated: "22 Juli 2025",
-  },
+ meta: {
+  total_wajib_ktp: 8079119,
+  total_aktivasi: 2177081,
+  rata_rata: 30.10,
+  target: 30,
+  updated: "24 Oktober 2025",
+},
   wilayah: [
     {
       id: 1,
