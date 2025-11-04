@@ -115,18 +115,6 @@ function Sidebar() {
         <button className="text-left flex items-center gap-3 py-2 px-3 rounded-lg bg-slate-50 font-medium">
           🏠 Dashboard
         </button>
-        <button className="text-left flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50">
-          📂 Data Wilayah
-        </button>
-        <button className="text-left flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50">
-          📊 Laporan
-        </button>
-        <button className="text-left flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50">
-          🗺️ Peta Sebaran
-        </button>
-        <button className="text-left flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50">
-          ⚙️ Pengaturan
-        </button>
       </nav>
 
       <div className="mt-auto pt-6">
@@ -296,7 +284,6 @@ export default function App() {
             <div>
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-2xl font-bold">Progress Aktivasi IKD per Wilayah</h2>
-                <div className="text-sm text-slate-500">Lihat detail wilayah →</div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
