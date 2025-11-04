@@ -34,10 +34,10 @@ const DATA = {
     {
       id: 2,
       nama: "Jakarta Pusat",
-      jumlah_rekam: 789647,
-      target_30: 236894,
-      realisasi: 179555,
-      persen: 22.74,
+      jumlah_rekam: 794239,
+      target_30: 238272,
+      realisasi: 198595,
+      persen: 25.00,
     },
     {
       id: 3,
